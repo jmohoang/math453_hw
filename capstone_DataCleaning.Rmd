@@ -1,0 +1,36 @@
+---
+title: "CapstoneData"
+author: "Muath Ibaid"
+date: "October 4, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#Reading the data:
+library(survival)
+gofundme = read.csv("/Users/muath/Desktop/Desktop/Macalester/Survival_Analysis/Capstone/cleanedData/All_Data_NoStory.csv")
+
+"winter" = c(12,1,2)
+"fall" = c(9,10,11)
+"spring" = c(3,4,5)
+"summer" = c(6,7,8)
+
+gofundme$seasonCreated = within(gofundme$monthCreated, {
+    dse1 = ifelse(diag1 == 4230, 1, 0)
+    dse2 = ifelse(diag2 == 4567, 1, 0)
+ })
+
+gofundmeCatSubset = subset(gofundme, category == 'Emergencies' | category == 'Education')
+```
+
+```{r}
+KM = survfit(Surv(daysSinceStarted,funded, gofundme$monthCreated) ~ category,data=subset(gofundme,category=='Emergencies'|category=='Education'))
+
+plot(KM, col = c(1:2), xlim = c(0,300))
+```
+
+
